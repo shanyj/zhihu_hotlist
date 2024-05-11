@@ -5,7 +5,8 @@ from utils import filter_content
 import json
 import time
 
-if __name__ == "__main__":
+
+def main():
     client = login()
     if not client:
         print("Login failed")
@@ -27,3 +28,8 @@ if __name__ == "__main__":
         })
     with open("./results.json", mode="w") as f:
         f.write(json.dumps(results))
+    return results
+
+
+if __name__ == "__main__":
+    main()

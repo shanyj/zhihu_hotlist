@@ -74,16 +74,10 @@ def get_similiar_question(client, question_id):
     sess = requests.Session()
     res = sess.get(url, headers=headers)
     data = res.json()["data"]
-    similiar_questions = []
     results = []
     for item in data:
         item_id = item["id"]
-        item_title = item["title"]
-        similiar_questions.append("{}: {}".format(item_id, item_title))
         results.append(item_id)
-    output = "\n".join(similiar_questions)
-    with open("./similiar_questions/{}.txt".format(question_id), mode="w") as f:
-        f.write(output)
     return results
 
 
