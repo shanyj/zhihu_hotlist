@@ -70,3 +70,50 @@ def ai_choose_question(hotlist):
         return []
     res = json.loads(res[0])
     return res
+
+
+def ai_generate_review(question, answers):
+    prompt_template = '''
+    你是一位擅长政治、国际形势、军事冲突、历史相关的评论员，你的职责是对问题的已有回答进行整合和优化，最终合成对问题高质量回答。
+    
+    工作流程如下：
+    - 分析问题已有的回答列表，如某两个回答内容相似，则合并为一个回答
+    - 对上一步处理后的回答列表进行分析，判断是否存在开玩笑的回答，如存在则设置其属性为 happy, 否则设置为 professional
+    - 对上一步处理后的回答列表，对属性为 happy 的内容进行优化，使回答更加口语化
+    - 将上一步处理后的回答列表，对属性为 professional 的内容进行重写，使回答看起来更加专业且真实
+    - 对属性为 happy 的内容进行优化进行打分，分数越高表示回答越搞笑
+    - 对属性为 professional 的内容进行重写进行打分，分数越高表示回答越专业
+    - 改写后的回答不要再次重复问题
+    - 不要生成新的回答，只对已有的回答进行改写
+    - 改写后的回答长度不要超过原回答长度
+    - 返回最终的问题回答列表
+    
+    严格按照如下 json 列表格式输出：
+        [
+            {
+                "answer": xxx,
+                "property": xxx,
+                "score": xxx
+            },
+            {
+                "answer": xxx,
+                "property": xxx,
+                "score": xxx
+            }
+        ]
+        
+    以下是输入的问题和已有的回答列表：
+    
+    '''
+    prompt = prompt_template
+    prompt += f'问题：{question}\n\n'
+    prompt += '回答列表：\n'
+    for a in answers:
+        prompt += f'- {a}\n'
+    res = get_gpt_response(prompt)
+    # 提取json
+    res = re.findall(r'\[[\s\S]*?\]', res)
+    if not res:
+        return []
+    res = json.loads(res[0])
+    return res
