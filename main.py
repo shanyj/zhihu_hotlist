@@ -1,6 +1,9 @@
+# coding:utf-8
+
 from zhihu_crawler import login, get_hot_list, get_hot_answer
 from llm import ai_choose_question, ai_generate_review
 from utils import filter_content
+from mail import send_email
 
 import json
 import time
@@ -42,8 +45,9 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    # main()
 
+    send_email(subject="subject", message="Test Message")
     # from llm import ai_generate_review
     # results = []
     # answer_list = [{
