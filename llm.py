@@ -32,7 +32,11 @@ def get_gpt_response(content):
         'temperature': 0.05,
     }
     resp = get_llm_response(url, data)
-    return resp['choices'][0]['message']['content'] if resp else ''
+    try:
+        return resp['choices'][0]['message']['content'] if resp else ''
+    except Exception as e:
+        print(resp)
+        return ""
 
 
 def ai_choose_question(hotlist):
