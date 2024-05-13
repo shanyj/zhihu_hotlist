@@ -4,8 +4,9 @@ import re
 
 def get_llm_response(url, data, retry_times=3):
     import requests
-    key = "Bearer ai-consultant"
-    headers = {"Authorization": key}
+    # key = "Bearer ai-consultant"
+    key = "Bearer sk-kp2w55hcJWuR12w6KmaBsI9xVZLwv7q3ptP78slj37DlymM3"
+    headers = {"Authorization": key, "Content-Type": "application/json"}
     while retry_times > 0:
         try:
             response = requests.post(url, json=data, headers=headers, timeout=240)
@@ -25,7 +26,8 @@ def get_llm_response(url, data, retry_times=3):
 
 
 def get_gpt_response(content):
-    url = 'https://maigpt.in.taou.com/rpc/platforms/go_pbs/maigpt/proxy/v1/chat/completions'
+    # url = 'https://maigpt.in.taou.com/rpc/platforms/go_pbs/maigpt/proxy/v1/chat/completions'
+    url = 'https://openkey.cloud/v1/chat/completions'
     data = {
         'messages': [{"role": "user", "content": content}],
         "model": "gpt-4",

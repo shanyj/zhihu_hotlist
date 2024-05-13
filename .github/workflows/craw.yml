@@ -3,7 +3,7 @@ name: 定时运行
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 17 * * *'
+    - cron: '30 12/18 * * *'
 
 jobs:
   build:
