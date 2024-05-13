@@ -1,15 +1,10 @@
 # coding: utf-8
 import datetime
-import json
-
 import requests
-import re
-import time
 
 from utils import filter_content
 
 from zhihu_oauth import ZhihuClient
-from zhihu_oauth.oauth.token import ZhihuToken
 
 headers = {
     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
