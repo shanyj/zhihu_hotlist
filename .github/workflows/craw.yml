@@ -1,9 +1,9 @@
-name: 定时抓取
+name: 定时运行
 
 on:
   workflow_dispatch:
   schedule:
-  - cron: '0 * * * *'
+    - cron: '30 17 * * *'
 
 jobs:
   build:
@@ -15,12 +15,11 @@ jobs:
           persist-credentials: false
           fetch-depth: 0
 
+      - name: Install dependencies
+        run: |
+          pip3 install -r ./requirements.txt
+
       - name: run start.sh
         run: |
           bash ./start.sh
-          
-      - name: GitHub Push
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+
