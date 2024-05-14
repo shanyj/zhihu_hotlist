@@ -15,10 +15,13 @@ def main():
     if not client:
         print("Login failed")
         exit(1)
+    print("Login success")
     # 获取热榜数据
     hot_list = get_hot_list()
+    print("get hot list success")
     # 大模型选择问题
     chosen_questions = ai_choose_question(hot_list)
+    print("choose questions success")
     results = []
     # 获取问题答案
     for i in chosen_questions:
@@ -33,6 +36,7 @@ def main():
             "answers": all_answers,
             "question_id": i["question_id"],
         })
+    print("get raw answers success")
     write_json_to_file(results, "./raw_results.json")
     # 发送邮件
     send_email(subject="原回答", message=json.dumps(results, indent=4))
@@ -46,6 +50,7 @@ def main():
             "question_id": item["question_id"]
         })
     write_json_to_file(finals, "./final_results.json")
+    print("get final answers success")
     # 发送邮件
     send_email(subject="gpt 修改版", message=json.dumps(finals, indent=4))
 
