@@ -34,6 +34,8 @@ def main():
             "question_id": i["question_id"],
         })
     write_json_to_file(results, "./raw_results.json")
+    # 发送邮件
+    send_email(subject="原回答", message=json.dumps(results, indent=4))
     finals = []
     for item in results:
         # 对于每个问题，llm 融合回答
@@ -45,7 +47,7 @@ def main():
         })
     write_json_to_file(finals, "./final_results.json")
     # 发送邮件
-    send_email(subject="subject", message=json.dumps(finals, indent=4))
+    send_email(subject="gpt 修改版", message=json.dumps(finals, indent=4))
 
 
 if __name__ == "__main__":
