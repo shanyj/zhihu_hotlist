@@ -85,4 +85,4 @@ def get_hot_answer(client, question_id):
         answers.append(answer)
     answers = sorted(answers, key=lambda x: x.voteup_count, reverse=True)
     answers = list(filter(lambda x: len(filter_content(x.content)) < 1500, answers))
-    return answers[:5]
+    return answers[:8]

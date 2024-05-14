@@ -4,8 +4,8 @@ import re
 
 def get_llm_response(url, data, retry_times=3):
     import requests
-    # key = "Bearer ai-consultant"
-    key = "Bearer sk-kp2w55hcJWuR12w6KmaBsI9xVZLwv7q3ptP78slj37DlymM3"
+    key = "Bearer ai-consultant"
+    # key = "Bearer sk-kp2w55hcJWuR12w6KmaBsI9xVZLwv7q3ptP78slj37DlymM3"
     headers = {"Authorization": key, "Content-Type": "application/json"}
     while retry_times > 0:
         try:
@@ -26,8 +26,8 @@ def get_llm_response(url, data, retry_times=3):
 
 
 def get_gpt_response(content):
-    # url = 'https://maigpt.in.taou.com/rpc/platforms/go_pbs/maigpt/proxy/v1/chat/completions'
-    url = 'https://openkey.cloud/v1/chat/completions'
+    url = 'https://maigpt.in.taou.com/rpc/platforms/go_pbs/maigpt/proxy/v1/chat/completions'
+    # url = 'https://openkey.cloud/v1/chat/completions'
     data = {
         'messages': [{"role": "user", "content": content}],
         "model": "gpt-4",
@@ -47,7 +47,7 @@ def ai_choose_question(hotlist):
 
     审核和筛选方法:
     - 剔除问题内容长度超过50字的问题
-    - 选择和政治、国际形势、军事冲突、历史相关的问题
+    - 选择和政治、国际形势、军事冲突、历史事件相关的问题
     - 不选择和娱乐、八卦、明星、影视剧、美食相关的问题
     - 国际形势、军事冲突相关的问题优先级最高
     - 返回所选的问题id和问题内容
@@ -86,7 +86,7 @@ def ai_generate_review(question, answers):
     - 分析问题已有的回答列表，如某两个回答内容相似，则合并为一个回答
     - 对上一步处理后的回答列表进行分析，判断是否存在开玩笑的回答，如存在则设置其属性为 happy, 否则设置为 professional
     - 对上一步处理后的回答列表，对属性为 happy 的内容进行优化，使回答更加口语化
-    - 将上一步处理后的回答列表，对属性为 professional 的内容进行重写，使回答看起来更加专业且真实
+    - 将上一步处理后的回答列表，对属性为 professional 的内容进行重写，使回答更加专业真实且符合逻辑，但不要自己杜撰新的内容
     - 对属性为 happy 的内容进行优化进行打分，分数越高表示回答越搞笑
     - 对属性为 professional 的内容进行重写进行打分，分数越高表示回答越专业
     - 改写后的回答不要再次重复问题
