@@ -84,5 +84,5 @@ def get_hot_answer(client, question_id):
     for _, answer in zip(range(50), question.answers):
         answers.append(answer)
     answers = sorted(answers, key=lambda x: x.voteup_count, reverse=True)
-    answers = list(filter(lambda x: len(filter_content(x.content)) < 1500, answers))
+    answers = list(filter(lambda x: len(10 < filter_content(x.content)) < 1500, answers))
     return answers[:8]
