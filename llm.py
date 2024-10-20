@@ -6,7 +6,7 @@ from raw_file import write_to_file
 def get_llm_response(url, data, retry_times=3):
     import requests
     # key = "Bearer ai-consultant"
-    key = "Bearer "
+    key = "Bearer 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"
     headers = {"Authorization": key, "Content-Type": "application/json"}
     while retry_times > 0:
         try:
@@ -286,11 +286,7 @@ def ai_generate_scripts(question, answers):
         prompt += f'- {name}的{answer}\n'
     write_to_file(data=prompt, filename='./output/prompt_4_generate_scripts.txt')
     res = get_doubao_response(prompt)
-    # 提取json
-    res = re.findall(r'\[[\s\S]*?\]', res)
-    if not res:
-        return []
-    return res[0]
+    return res
 
 
 def ai_generate_review(question, answers):

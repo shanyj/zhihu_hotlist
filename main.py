@@ -37,6 +37,7 @@ def main():
             "question_id": i["question_id"],
         })
     write_json_to_file(results, "./output/1_raw_results.json")
+    print("get raw answers success")
     # 发送邮件
     send_email(subject="原回答", message=json.dumps(results, indent=4))
     finals = []
@@ -45,16 +46,15 @@ def main():
         # 对于每个问题，llm 融合回答
         # res = ai_generate_review(item["question"], item["answers"])
         res = ai_role_choose_answer(item["question"], item["answers"])
-        write_json_to_file(res, "./output/2_role_choose_answer.json")
         res2 = ai_generate_chat(item["question"], item["answers"], res)
-        write_json_to_file(res, "./output/3_generate_chat.json")
         res3 = ai_generate_scripts(item["question"], res2)
         finals.append({
             "question": item["question"],
             "answer": res3,
             "question_id": item["question_id"]
         })
-    write_json_to_file(finals, "./output/4_final_results.json")
+        print("get script {} success".format(item["question_id"]))
+    write_json_to_file(finals, "./output/2_final_results.json")
     print("get final answers success")
     # 发送邮件
     send_email(subject="gpt 修改版", message=json.dumps(finals, indent=4))
