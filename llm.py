@@ -6,7 +6,7 @@ from raw_file import write_to_file
 def get_llm_response(url, data, retry_times=3):
     import requests
     # key = "Bearer ai-consultant"
-    key = "Bearer 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"
+    key = "Bearer "
     headers = {"Authorization": key, "Content-Type": "application/json"}
     while retry_times > 0:
         try:
@@ -28,7 +28,7 @@ def get_llm_response(url, data, retry_times=3):
 
 def get_doubao_llm_response(url, data, retry_times=3):
     import requests
-    key = "Bearer e0ce2240-7985-430f-bc0e-93b497f05d10"
+    key = "Bearer "
     headers = {"Authorization": key, "Content-Type": "application/json"}
     while retry_times > 0:
         try:
@@ -68,7 +68,7 @@ def get_doubao_response(content):
     url = 'https://ark.cn-beijing.volces.com/api/v3/chat/completions'
     data = {
         'messages': [{"role": "user", "content": content}],
-        "model": "ep-20241020114913-zfc6f",
+        "model": "",
         'temperature': 0.05,
     }
     resp = get_doubao_llm_response(url, data)
