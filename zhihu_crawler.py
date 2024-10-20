@@ -4,42 +4,43 @@ import requests
 
 from utils import filter_content
 
+from zhihu_oauth.oauth.token import ZhihuToken
+from zhihu_oauth.zhcls.question import Question
 from zhihu_oauth import ZhihuClient
 
 headers = {
     "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-    "Cookie": '''d_c0="AOBe-R7pTROPTjYJzih5TVRFsZUbg8T3fg8=|1624426008"; q_c1=e176cf33f45c4a99b9aba84fefddb6ff|1659669169000|1627291964000; _zap=b8138f7e-017f-4389-b074-740f24fa54f1; dream_token=Yzg4YzY4NDQ1MzEwNDllZWM5ZDBhY2IyMTI5ZDJiNzI1YmYwMDAxMTg0YzAwNDM2ODk2YTYxN2U3MzBjMTM5Mw==; _xsrf=d4bba265-9840-4515-81ea-a6d70b513108; SL_G_WPT_TO=en; SL_GWPT_Show_Hide_tmp=1; SL_wptGlobTipTmp=1; Hm_lvt_98beee57fd2ef70ccdd5ca52b9740c49=1715322393; __snaker__id=LBaQvPhxhdSPRk5m; captcha_session_v2=2|1:0|10:1715328571|18:captcha_session_v2|88:QlJkeUxxcXN1UXZTSEFia2kxeVBlS2lmMk9FZFBwYm45TFYyc1dXbm13Q2x3SW5NZ0FudkdoZHY3dUVqWUxSWA==|7e004ddeecad0f2434a7e0e894658a2762011894b07b7f9a0fc2937499a771e0; captcha_ticket_v2=2|1:0|10:1715328602|17:captcha_ticket_v2|728:eyJ2YWxpZGF0ZSI6IkNOMzFfZGxuSWduTkdnV0dFX2FMZTNIM21PcXhZV0pGejFXUHJBUipLUDZHZzFqdzBYcld0TSpibkRBMG1OdzkuekRvblkuYnJLQUhlM3BpTWFFQXNzeHU4MXNuY3ZHUURzcXkzS3p1cnU4LnY0QnZuU0RQVlJuZDFCQV9LZENWeTBpRHdjX3kyTEhiQipfNXhEOWZKQ0hQQUNsLmMzekZYZkJZdjFvZllPUGM5X3F5ZmZWZ0d6cEpzOVlodmprUVk2VjFaeXM4ZDZfbmZDM2tzYTVQMzg2c2gyX0NXUkF0c2FnQ18yNUNRenRHSEphVWRDWUJNKmFRdEc4TU1YR3RZSWx3SnI1V1hTc1l2Undnb1dOMWNKYmN0MVNEaWpKKmQqQkZVRXExTmFoR1pEX2xqeldEc05VaW9IZ0h1MTI5TFRGZGk4SXdaY0wxNnhXOW1NTk41WERnOWlNMnRWY1JhelFnNEJTQy5ETE8uMTVrSDNsczFQcTl3bVFZKmkzUUROVmRxU0twYU5ORjF2THhzSWsyOWdRVUJWTmpjTWhNclpfNEUxbmZaVDZSR3l5VGFaNVhOQ3pSX0FYQ2NsaUYqcXBiNTgwX052Q05VQlZFZWREVXY5MGlXbzIzZ0JhZnBQczlTU1UuakhjMTNkOW5YTTZJMDZkcm9ZOHR4YTA1MGV2Wm1CKnNmTGc3N192X2lfMSJ9|4a075b8342a974bdda6fa3bc8ea5dc9a4b4c8086510a5b4f6d9043805df01e79; gdxidpyhxdE=Lb3e6%2FDoTy2fTN02rI74YfnCRIpX%2F9x4pzlzpCrX%5CGH1MZzNtNElvaEUWbdUyiTHqs8pM%2Bt%2BU9kPVdyIkN%2FKVNV1M6qkOlgt3lmJvdEhwsNRZUid5WLDul%2BKw7JazkXstZiHt4thJ4oKign4EuQTsP2BJSMeRv%5CDEk9R1vkuR89ECZQg%3A1715331514184; ff_supports_webp=1; z_c0=2|1:0|10:1715414442|4:z_c0|92:Mi4xZHo1eEFnQUFBQUFBNEY3NUh1bE5FeVlBQUFCZ0FsVk5hU1FyWndCWkZNUk9MUEFkWDVMekdrYjJDMlh0enNHR0p3|38101ee38a33830a3e2ddd578d4d51dab64e4b99dec0a8aac177923fe4a77f3e; BEC=f3a75d7265fd269b7c515e5c94175904; tst=h; SESSIONID=KWuvlhdx2tcQnC1KfJrK5CT51OXwEqYWIB4Nf2YkrQU; JOID=UloXA0wUzw5m-RG4FBSq0yHd-PAFXZh5F5J73G4huW01kFWLX_D_NAD8E7oRtjAIPANdbF29Ofut9GBqEpDWAl8=; osd=VVoWBEsTzw9h_ha4FROt1CHc__cCXZl-EJV73Wkmvm00l1KMX_H4Mwf8Er0WsTAJOwRabFy6Pvyt9WdtFZDXBVg=; KLBRSID=ed2ad9934af8a1f80db52dcb08d13344|1715417835|1715410350; Hm_lpvt_98beee57fd2ef70ccdd5ca52b9740c49=1715417836'''
+    "Cookie": '''_9755xjdesxxd_=32; YD00517437729195%3AWM_TID=nOf24KiqJExAFUQRQBcq58zsLFTr0%2Byc; YD00517437729195%3AWM_NI=zMDsgQfXTPzvz82WvDud6%2BcX3srRg6ZKr96APjXtiUz4jPgdiOpkV%2BwF%2FcQLVrWTH99klxwLtIZV36OWz%2B9tfGKm9IUY6wQD62C62vAxum2TEYHBgFxWXJh64vwjvTlhbHc%3D; YD00517437729195%3AWM_NIKE=9ca17ae2e6ffcda170e2e6eed2c548829d9cabb36996b48fa2c84b879f8bafb621edb1aed2ed6e918fa7b9fc2af0fea7c3b92aba938c94e65ba6889cb1f97ebae8feb8f550b7bcfacce254f1adbeb3e63e9a95bedab54b94b69895ec5fbaeca6b1e670ab91c08cd521b59ae184d44896ae99b5cb33fbb5a499f648b89796b7b23e8d89b6ccbc80a699858ebc439787fa98d450f6ee8dd7b17e83a8bb8eb160878788a3e64ebc8998abeb3ef8aab98bf560b0b8aea9e237e2a3; _xsrf=lrZRPWEgLz9iX1paRKP9XqDSRXkvpKrM; d_c0=AfBRksMDBhmPTr-edxIXD6XD_rjQLwb_7tA=|1722680369; _zap=78b810d9-a0f7-458d-9f8b-3b0f7317fe46; Hm_lvt_98beee57fd2ef70ccdd5ca52b9740c49=1726883740; Hm_lpvt_98beee57fd2ef70ccdd5ca52b9740c49=1726883740; HMACCOUNT=A6543819E59952B3; __snaker__id=XcQ8KHUZ7P5qoa0W; gdxidpyhxdE=xxxSZd2sRQ%5CRobbVMmk7W8i3Nxj4ssNfznZ9YVthpd5rNSefYAaeTvbzcnjr47XvlhlSY8o%2BnEDmYjbljB1hbA%2FEDSVleNf%2F%2BlDiKWJyqRCVvd5iod8gSmu2fBjQpMjcksu6TyxZ68PCcAgyCJPyZGgiBo9bgxs%2ByofIcDe8Wd2sybLB%3A1726982434293; __zse_ck=003_bTX/bhJ9jDyc2vE7sJTkH1ivFjmXkQXbwRBmrEg5OipOx1kl39K/B6HiJAJJWZ+Oh2EWBYeBLR0O=iTuevvU1=k+dMAoxiiQgop9H+8va+D/; captcha_session_v2=2|1:0|10:1729393809|18:captcha_session_v2|88:N1U3REo0SFVTcUkzMXNaNytIOCs0SUhENno4RFgwWE0ydDZqc0R6cC8wdmJZd3VQVTNHTVArdW81dmhYS2JYMQ==|68f2a0da01b803ba21e6382cd447ae84494bb6b3a446a9a1f4180db27feeb46e; captcha_ticket_v2=2|1:0|10:1729393834|17:captcha_ticket_v2|728:eyJ2YWxpZGF0ZSI6IkNOMzFfS0JzVHlaUXdvdjhoczZ4b3ROMXB5dnVsR1dhV2l0STk4RFpSTWpBZEpORVJmZ3VoeTNuYjFGODg2bnguTGI1SnFuSWkuU3VuNHNrZGFPSGpIVDE0NjNNUWhRS1lwa2pwRzRGYUFPZVlVaTZfeFJIenl6c0ttcG9ZandsdFlxSFZTdjk4R1NRVjR3R0tkNVNUaVREWmpYQmVkQUxHMWNmQlpmcTU1X1VfRFY1bFduakFQbHNpVWVMUTBvWWxJWTBqcWxDb2FoTFFZMnA0TzlKd1RvSzhWQ29GSVN2WmN0NFVUZ2kqeG5SQmw5cGp0UnZVSEx4UkZXaUFDMEJESnpPUypBcXJuRHZLYjBlX2hUcDYybGRXcjJlaEJndGNaVHZNcWZOUFpMeWVxbGhmY01SM0hTOTRmbXE1RTQ5T3YqM1FtUVVtOEJtWGFaWE1ubUN3TlRrMU1PKkRDa29hUjl2VFNldkVtaGRmeHJsRHhveEVmUTNOZmt4LjJQMHNUQmp0ckNDWFVVTUVLeHVYVTlyYThlRlVDNm1aSkJvZGcxc3BTYkc2aTEuZkJXLkhYYmhoSi40OHJtdVNCSlRrdVZBYWswSm5Pb28yb1JvWipGeWtWVVNDR05XbDYzWEYzRmtPYUJkUEZQbW0xanNXdFdrZm9ibnJZZGtaWlNRQjE0WlNZOXRqLlk3N192X2lfMSJ9|bbeff1ce44d74a1faca7614b817000547ba2980da725d068e641d83e35be1cec; q_c1=2bb99efb9f794fc787d77e1b1b5a0524|1729394215000|1729394215000; BEC=d6322fc1daba6406210e61eaa4ec5a7a; z_c0=2|1:0|10:1729394217|4:z_c0|92:Mi4xZHo1eEFnQUFBQUFCOEZHU3d3TUdHU1lBQUFCZ0FsVk52TUlCYUFETUt0dlFRR0VsN2tUVFNfXy16MUlOSVNPLVhR|869a35ebd9d6611d5cca3f514a698460979580a4b0116db680f72b352fba89be; SESSIONID=j3ioIIDVRzGht7J2vuMHSZhxBVUJHY8B8yOU48cRA49; JOID=VlARBkytzuPC0QtVAqyRfULi8TYRy_GLr5tOHVX8uKirpz8TPIS19KTeC1gBEtGJgX2orqzoXDEfMJtpbRgTdec=; osd=W10UCkqgw-bO1wZYB6CXcE_n_TAcxvSHqZZDGFn6taWuqzkeMYG58qnTDlQHH9yMjXulo6nkWjwSNZdvYBUWeeE=; tst=h'''
 }
 
-
-# zhihu_token_config = {
-#     "uid": "f5494f977cf33ec5fe29764f4f8b993f",
-#     "user_id": 667301141109542912,
-#     "access_token": "2.1dz5xAgAAAAAA4F75HulNEyYAAABgAlVNaSQrZwBZFMROLPAdX5LzGkb2C2XtzsGGJw",
-#     "token_type": "bearer",
-#     "refresh_token": "2.1283516d52441841c37acf2d3",
-#     "expires_in": 15552000,
-#     "cookie": {
-#         "q_c0": "2|1:0|10:1715328617|4:q_c0|92:Mi4xZHo1eEFnQUFBQUFBNEY3NUh1bE5FeVlBQUFCZ0FsVk5hU1FyWndCWkZNUk9MUEFkWDVMekdrYjJDMlh0enNHR0p3|e0cde53ba114a2ccb227e621c630f3ec20e6dfeb395242bf99eb8c97ee5ffb55",
-#         "z_c0": "2|1:0|10:1715328617|4:z_c0|92:Mi4xZHo1eEFnQUFBQUFBNEY3NUh1bE5FeVlBQUFCZ0FsVk5hU1FyWndCWkZNUk9MUEFkWDVMekdrYjJDMlh0enNHR0p3|971ff8ad2de1423c7c6ad1da1efabca616f4436d7ca101f8a1732dc8f35372d6"
-#     },
-#     "unlock_ticket": "ABAMMtq6QgkmAAAAYAJVTXHdPWZIG-n6YABnf4oqmNlX3R-YnUElGg==",
-#     "lock_in": 1800
-# }
+zhihu_token_config = {
+    "uid": "f5494f977cf33ec5fe29764f4f8b993f",
+    "user_id": 667301141109542912,
+    "access_token": "2.1dz5xAgAAAAAB8FGSwwMGGSYAAABgAlVNvMIBaADMKtvQQGEl7kTTS__-z1INISO-XQ",
+    "token_type": "bearer",
+    "refresh_token": "2.1901c0ae3c68a92af44b50e74",
+    "expires_in": 15552000,
+    "cookie": {
+        "q_c0": "2|1:0|10:1729393852|4:q_c0|92:Mi4xZHo1eEFnQUFBQUFCOEZHU3d3TUdHU1lBQUFCZ0FsVk52TUlCYUFETUt0dlFRR0VsN2tUVFNfXy16MUlOSVNPLVhR|86cd1bfcc4eeab82f110e85950e9307e3906b2cfff3cb08492e09e5e90192a84",
+        "z_c0": "2|1:0|10:1729393852|4:z_c0|92:Mi4xZHo1eEFnQUFBQUFCOEZHU3d3TUdHU1lBQUFCZ0FsVk52TUlCYUFETUt0dlFRR0VsN2tUVFNfXy16MUlOSVNPLVhR|a197952e07e465ce813aff7718aa0f9c2260014067f5b37796e53ecf0bbc8a58"
+    },
+    "unlock_ticket": "ABAMMtq6QgkmAAAAYAJVTcR7FGdY5RMs8Scj0zDHZa7Pk9isqj1P2Q==",
+    "lock_in": 1800
+}
 
 
 def login():
     client = ZhihuClient()
-    # ZhihuToken.from_dict(zhihu_token_config).save('token.pkl')
+    ZhihuToken.from_dict(zhihu_token_config).save('token.pkl')
     client.load_token('./token.pkl')
-    # client.save_token('token.pkl')
+    client.save_token('token.pkl')
     if client.is_login:
         return client
     return None
 
 
 def get_hot_list():
-    url = "https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total?limit=30"
+    url = "https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total?limit=50&desktop=true"
     now_time = datetime.datetime.now()
     year = now_time.year
     month = now_time.month
@@ -84,5 +85,5 @@ def get_hot_answer(client, question_id):
     for _, answer in zip(range(100), question.answers):
         answers.append(answer)
     answers = sorted(answers, key=lambda x: x.voteup_count, reverse=True)
-    answers = list(filter(lambda x: 10 < len(filter_content(x.content)) < 1200, answers))
+    answers = list(filter(lambda x: 90 < len(filter_content(x.content)) < 5000, answers))
     return answers[:8]
