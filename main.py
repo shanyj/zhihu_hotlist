@@ -47,10 +47,10 @@ def main():
         # res = ai_generate_review(item["question"], item["answers"])
         res = ai_role_choose_answer(item["question"], item["answers"])
         res2 = ai_generate_chat(item["question"], item["answers"], res)
-        res3 = ai_generate_scripts(item["question"], res2)
+        # res3 = ai_generate_scripts(item["question"], res2)
         finals.append({
             "question": item["question"],
-            "answer": res3,
+            "answer": res2,
             "question_id": item["question_id"]
         })
         print("get script {} success".format(item["question_id"]))

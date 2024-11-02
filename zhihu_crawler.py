@@ -31,9 +31,9 @@ zhihu_token_config = {
 
 def login():
     client = ZhihuClient()
-    ZhihuToken.from_dict(zhihu_token_config).save('token.pkl')
+    # ZhihuToken.from_dict(zhihu_token_config).save('token.pkl')
     client.load_token('./token.pkl')
-    client.save_token('token.pkl')
+    # client.save_token('token.pkl')
     if client.is_login:
         return client
     return None
